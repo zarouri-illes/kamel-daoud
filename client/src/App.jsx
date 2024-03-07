@@ -5,7 +5,6 @@ function App() {
     return (
         <BrowserRouter>
             <Navbar />
-            <Landing/>
             <Routes>
                 <Route path='/' element={<Home/>}></Route>
                 <Route path='/sign-in' element={<SignIn/>}></Route>
