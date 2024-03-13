@@ -4,6 +4,7 @@ import SignIn from "./pages/SignIn";
 import About from "./pages/About";
 import { Landing } from "./components/Landing";
 import Navbar from "./components/Navbar";
+import Signup from "./pages/Signup";
 
 export {
     Home,
@@ -11,5 +12,6 @@ export {
     SignIn,
     About,
     Landing,
-    Navbar
+    Navbar,
+    Signup
 }
