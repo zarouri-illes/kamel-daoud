@@ -6,7 +6,7 @@ import authRouter from './routes/auth.route.js';
 
 dotenv.config();
 
-mongoose.connect("mongodb+srv://illes:illesisillesforeva@kamel-daoud.jkvmmxz.mongodb.net/?retryWrites=true&w=majority&appName=kamel-daoud").then(() => console.log('connect to db'));
+mongoose.connect(process.env.MONGO).then(() => console.log('connect to db'));
 
 const app = express();
 
