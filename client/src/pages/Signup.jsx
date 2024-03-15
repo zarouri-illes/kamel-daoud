@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 export default function Signup() {
 
-    const [formData, setFormData] = useState()
+    const navigate = useNavigate();
+
+    const [formData, setFormData] = useState();
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         setFormData(
@@ -16,10 +20,26 @@ export default function Signup() {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log('form is submitted');
-        const {data} = await axios.post('/api/auth/signup',  formData);
-        console.log(data)
+        e.preventDefault(); 
+        try {
+            setLoading(true)
+            console.log('form is submitted');
+            const {data} = await axios.post('/api/auth/signup',  formData);
+
+            if(data.success === false) {
+                setLoading(false);
+                setError(data.message);
+                return;
+            }
+
+            setLoading(false);
+            setError(null);
+            navigate("/signin")
+            console.log("user created");
+        } catch (error) {
+            setLoading(false);
+            setError(error.message)
+        }
     }
 
     return (
@@ -31,12 +51,18 @@ export default function Signup() {
                 <input type="email" placeholder='Email' className='p-3 rounded-lg border' id='email' onChange={handleChange}/>
                 <input type="password" placeholder='Password' className='p-3 rounded-lg border' id='password' onChange={handleChange} />
 
-                <button className='border transition-all duration-300 hover:opacity-90 py-2 rounded-lg bg-secondary cursor-pointer text-white'>Submit</button>
+                <button disabled={loading} className='border transition-all duration-300 hover:opacity-90 py-2 rounded-lg bg-secondary cursor-pointer text-white'>
+                    {loading ? "Loading..." : "Submit"}
+                </button>
             </form>
             <div className='mt-8'>
                 <p className='flex gap-4'>Already have an account ? <Link to={"/signin"}>
                     <span className='text-primary'>Sign in</span>   
                 </Link></p>
+            </div>
+
+            <div>
+                {error ? <p className='bg-primary'>{error}</p> : <p></p>}
             </div>
         </section>
     )
